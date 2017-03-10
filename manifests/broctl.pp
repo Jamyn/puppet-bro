@@ -23,20 +23,20 @@ class bro::broctl(
   }
   if ( $broctl == 'DEFAULT' ) {
     tps::report { "${basedir}/etc/broctl.cfg":
-      flare => [
-        '# PUPPET MANAGED CONFIG',
-        $cid,
-        "SitePolicyPath = ${sitedir}",
-        "MailTo = ${mailto}",
-        "SitePolicyStandalone = ${sitepolicy}",
-        "CfgDir = ${etc_dir}",
-        "SpoolDir = ${logdir}/spool",
-        "LogDir = ${logdir}/logs",
-        "LogRotationInterval = ${logrotate}",
-        $purge_logs,
-        "MinDiskSpace = ${mindisk}",
-        "Debug = ${debug}",
-      ],
+        flare => [
+          '# PUPPET MANAGED CONFIG',
+          $cid,
+          "SitePolicyPath = ${sitedir}",
+          "MailTo = ${mailto}",
+          "SitePolicyStandalone = ${sitepolicy}",
+          "CfgDir = ${etc_dir}",
+          "SpoolDir = ${logdir}/spool",
+          "LogDir = ${logdir}/logs",
+          "LogRotationInterval = ${logrotate}",
+          $purge_logs,
+          "MinDiskSpace = ${mindisk}",
+          "Debug = ${debug}",
+        ],
       notify  => Service['wassup_bro'],
     }
   } elsif ( $broctl == 'CUSTOM' ) {

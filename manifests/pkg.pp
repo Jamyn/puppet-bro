@@ -15,7 +15,7 @@ class bro::pkg(
           provider => $pkg_provider,
           ensure   => $pkg_ensure,
           source   => $pkg_location,
-          notify => Service['wassup_bro'],
+          notify   => Service['wassup_bro'],
         }
 
       } elsif ( $::osfamily == 'Debian') {
@@ -41,8 +41,8 @@ class bro::pkg(
     }
     'repo': {
       package { $pkg:
-        ensure   => $bro_present,
-        notify   => Service['wassup_bro'],
+        ensure => $bro_present,
+        notify => Service['wassup_bro'],
       }
     }
     'none': {

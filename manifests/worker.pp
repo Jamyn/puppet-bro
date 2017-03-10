@@ -21,19 +21,19 @@ define bro::worker (
     $bro_cpu_pin = join($bro_cpu_range, ',')
     $bro_cpu_count = count($bro_cpu_range)
     concat::fragment { "${host}_${int}":
-      target => "${etc_dir}/node.cfg",
+      target  => "${etc_dir}/node.cfg",
       content => template('bro/worker_name.erb'),
     }
   } elsif ($method != 'UNSET' ) and ($cpus == 'UNSET') and ($procs != 'UNSET') and ($type == 'cluster') {
     concat::fragment { "${host}_${int}":
-      target => "${etc_dir}/node.cfg",
+      target  => "${etc_dir}/node.cfg",
       content => template('bro/worker_name.erb'),
     }
   } elsif ($method != 'UNSET' ) and ($cpus == 'UNSET') and ($procs == 'UNSET') and ($type == 'cluster') {
     notify{'BROken - MUST SET CPUS OR PROCS':}
   } elsif ($method == 'UNSET' ) and ($cpus == 'UNSET') and ($procs == 'UNSET') and ($type == 'cluster') {
     concat::fragment { "${host}_${int}":
-      target => "${etc_dir}/node.cfg",
+      target  => "${etc_dir}/node.cfg",
       content => template('bro/worker_name.erb'),
     }
   } else {}
