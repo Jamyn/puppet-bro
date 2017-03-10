@@ -39,34 +39,34 @@ class bro(
     owner   => '0',
     group   => '0',
   }
-  if ! defined_with_params(Host["$::fqdn"], {'ensure' => 'present' }) {
-    host { "$::fqdn":
+  if ! defined_with_params(Host["${::fqdn}"], {'ensure' => 'present' }) {
+    host { "${::fqdn}":
       ensure       => present,
-      ip           => "$::hostint_ipv4",
-      host_aliases => ["$::hostname"],
+      ip           => "${::hostint_ipv4}",
+      host_aliases => ["${::hostname}"],
     }
   }
   exec { 'create_base':
-    command => "mkdir -p $basedir",
+    command => "mkdir -p ${basedir}",
     creates => $basedir,
     path    => ['/bin','/sbin','/usr/sbin','/usr/bin'],
   }
   exec { 'create_etc_dir':
-    command => "mkdir -p $etc_dir",
+    command => "mkdir -p ${etc_dir}",
     creates => $etc_dir,
     path    => ['/bin','/sbin','/usr/sbin','/usr/bin'],
   }
   exec { 'create_site_dir':
-    command => "mkdir -p $sitedir",
+    command => "mkdir -p ${sitedir}",
     creates => $sitedir,
     path    => ['/bin','/sbin','/usr/sbin','/usr/bin'],
   }
   $if_dirs = [
-    "$basedir",
-    "$basedir/bin",
-    "$basedir/etc",
-    "$basedir/share",
-    "$basedir/share/bro",
+    "${basedir}",
+    "${basedir}/bin",
+    "${basedir}/etc",
+    "${basedir}/share",
+    "${basedir}/share/bro",
   ]
   if ! defined_with_params(File[$if_dirs], {'ensure' => 'directory' }) {
     file { $if_dirs:
@@ -75,7 +75,7 @@ class bro(
     }
   }
   file { 'scripts':
-    name      => "$sitedir/scripts",
+    name      => "${sitedir}/scripts",
     recurse   => true,
     purge     => true,
     force     => true,
@@ -85,44 +85,44 @@ class bro(
     require   => Exec['create_site_dir'],
     show_diff => false,
   }
-  $localbro_default = "puppet:///modules/bro/localbro/$sitepolicy"
+  $localbro_default = "puppet:///modules/bro/localbro/${sitepolicy}"
   $localbro_custom = "puppet:///modules/bro/localbro/${::hostname}_local.bro"
-  file { "$sitedir/$sitepolicy":
-    source => [ "$localbro_custom","$localbro_default" ],
+  file { "${sitedir}/${sitepolicy}":
+    source => [ "${localbro_custom}","${localbro_default}" ],
     notify => Service['wassup_bro'],
     require => [
       Exec['create_base'],
       Exec['create_site_dir'],
     ],
   }
-  file { "$basedir/bin/bro_cron":
+  file { "${basedir}/bin/bro_cron":
     mode => '0755',
     content => template('bro/bro_cron.erb'),
     require => Exec['create_base'],
   }->
   cron { 'bro_cron':
     ensure  => $bro_present,
-    command => "$basedir/bin/bro_cron",
+    command => "${basedir}/bin/bro_cron",
     user    => '0',
     minute  => '*/5',
   }
-  file { "$basedir/bin/wassup_bro":
+  file { "${basedir}/bin/wassup_bro":
     mode => '0755',
     content => template('bro/wassup_bro.erb'),
     require => Exec['create_base'],
   }
-  $status  = "$basedir/bin/wassup_bro status | grep running"
-  $start   = "$basedir/bin/wassup_bro start"
-  $stop    = "$basedir/bin/wassup_bro stop"
-  $restart = "$basedir/bin/wassup_bro restart"
+  $status  = "${basedir}/bin/wassup_bro status | grep running"
+  $start   = "${basedir}/bin/wassup_bro start"
+  $stop    = "${basedir}/bin/wassup_bro stop"
+  $restart = "${basedir}/bin/wassup_bro restart"
   service { 'wassup_bro':
     ensure  => $bro_state,
     status  => $status,
     start   => $start,
     restart => $restart,
     stop    => $stop,
-    path    => "$basedir/bin/",
-    require => File["$basedir/bin/wassup_bro"],
+    path    => "${basedir}/bin/",
+    require => File["${basedir}/bin/wassup_bro"],
   }
   $node_conf = "${etc_dir}/node.cfg"
   if ($type == 'cluster') {

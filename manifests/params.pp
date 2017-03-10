@@ -18,9 +18,9 @@ class bro::params {
   $pkg          = 'bro'
   $pkg_source   = 'repo'
   $type         = 'standalone'
-  $network      = $::hostint_ipv4_cidr 
-  $etc_dir      = "$basedir/etc"
-  $sitedir      = "$basedir/share/bro/site"
+  $network      = $::hostint_ipv4_cidr
+  $etc_dir      = "${basedir}/etc"
+  $sitedir      = "${basedir}/share/bro/site"
   $bro_pkg_name = $::osfamily ? {
     'RedHat' => 'Bro-2.3-Linux-x86_64.rpm',
     'Debian' => 'Bro-2.3-Linux-x86_64.deb',
