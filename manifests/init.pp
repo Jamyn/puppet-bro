@@ -39,7 +39,7 @@ class bro(
     owner   => '0',
     group   => '0',
   }
-  if ! defined_with_params(Host["$::fqdn"], {'ensure' => "present" }) {
+  if ! defined_with_params(Host["$::fqdn"], {'ensure' => 'present' }) {
     host { "$::fqdn":
       ensure       => present,
       ip           => "$::hostint_ipv4",
@@ -69,7 +69,7 @@ class bro(
     "$basedir/share/bro",
   ]
   if ! defined_with_params(File[$if_dirs], {'ensure' => 'directory' }) {
-    file { $if_dirs: 
+    file { $if_dirs:
       ensure => directory,
       require => Exec['create_base'],
     }
@@ -79,7 +79,7 @@ class bro(
     recurse   => true,
     purge     => true,
     force     => true,
-    source    => "puppet:///modules/bro/scripts",
+    source    => 'puppet:///modules/bro/scripts',
     ignore    => '.git',
     notify    => Service['wassup_bro'],
     require   => Exec['create_site_dir'],

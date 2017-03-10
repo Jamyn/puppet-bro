@@ -1,4 +1,4 @@
-class bro::pkg( 
+class bro::pkg(
   $pkg_source   = $bro::pkg_source,
   $bro_pkg_name = $bro::bro_pkg_name,
   $bro_url      = $bro::bro_url,
@@ -22,8 +22,8 @@ class bro::pkg(
         ensure_packages(['wget','libc6','python2.6','libssl0.9.8'])
         $pkg_location = "/usr/local/src/$bro_pkg_name"
         $pkg_provider = 'dpkg'
-        $execlaunchpaths = ["/usr/bin", "/usr/sbin", "/bin", "/sbin", "/etc"]
-        $executefrom = "/usr/local/src"
+        $execlaunchpaths = ['/usr/bin', '/usr/sbin', '/bin', '/sbin', '/etc']
+        $executefrom = '/usr/local/src'
         exec { 'download_bro':
           command => "wget -d $bro_url/$bro_pkg_name",
           cwd     => "$executefrom",
