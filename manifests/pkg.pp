@@ -12,8 +12,8 @@ class bro::pkg(
         $pkg_location = "${bro_url}/${bro_pkg_name}"
         $pkg_provider = 'rpm'
         package { $pkg:
-          provider => $pkg_provider,
           ensure   => $pkg_ensure,
+          provider => $pkg_provider,
           source   => $pkg_location,
           notify   => Service['wassup_bro'],
         }
@@ -31,8 +31,8 @@ class bro::pkg(
           creates => "${executefrom}/${bro_pkg_name}",
         }
         package { $pkg:
-          provider => $pkg_provider,
           ensure   => $pkg_ensure,
+          provider => $pkg_provider,
           source   => $pkg_location,
           require  => Exec['download_bro'],
           notify   => Service['wassup_bro'],
