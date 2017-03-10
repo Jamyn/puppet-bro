@@ -1,5 +1,5 @@
 define bro::worker (
-  $host="${::hostname}",
+  $host=$::hostname,
   $int=$title,
   $order=20,
   $method='UNSET',
@@ -17,7 +17,7 @@ define bro::worker (
       $bro_firstcpu = $cpus
       $bro_lastcpu = $cpus
     }
-    $bro_cpu_range = range("${bro_firstcpu}", "${bro_lastcpu}")
+    $bro_cpu_range = range($bro_firstcpu, $bro_lastcpu)
     $bro_cpu_pin = join($bro_cpu_range, ',')
     $bro_cpu_count = count($bro_cpu_range)
     concat::fragment { "${host}_${int}":

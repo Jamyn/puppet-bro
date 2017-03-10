@@ -11,7 +11,7 @@ class bro::pkg(
         ensure_packages(['openssl','file-libs','python','bash','zlib','bind-utils','bind-libs','libpcap'])
         $pkg_location = "${bro_url}/${bro_pkg_name}"
         $pkg_provider = 'rpm'
-        package { "${pkg}":
+        package { $pkg:
           provider => $pkg_provider,
           ensure   => $pkg_ensure,
           source   => $pkg_location,
@@ -26,11 +26,11 @@ class bro::pkg(
         $executefrom = '/usr/local/src'
         exec { 'download_bro':
           command => "wget -d ${bro_url}/${bro_pkg_name}",
-          cwd     => "${executefrom}",
+          cwd     => $executefrom,
           path    => $execlaunchpaths,
           creates => "${executefrom}/${bro_pkg_name}",
         }
-        package { "${pkg}":
+        package { $pkg:
           provider => $pkg_provider,
           ensure   => $pkg_ensure,
           source   => $pkg_location,
@@ -40,7 +40,7 @@ class bro::pkg(
       } else {}
     }
     'repo': {
-      package { "${pkg}":
+      package { $pkg:
         ensure   => $bro_present,
         notify   => Service['wassup_bro'],
       }

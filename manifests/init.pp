@@ -39,11 +39,11 @@ class bro(
     owner   => '0',
     group   => '0',
   }
-  if ! defined_with_params(Host["${::fqdn}"], {'ensure' => 'present' }) {
-    host { "${::fqdn}":
+  if ! defined_with_params(Host[$::fqdn], {'ensure' => 'present' }) {
+    host { $::fqdn:
       ensure       => present,
-      ip           => "${::hostint_ipv4}",
-      host_aliases => ["${::hostname}"],
+      ip           => $::hostint_ipv4,
+      host_aliases => [$::hostname],
     }
   }
   exec { 'create_base':
@@ -62,7 +62,7 @@ class bro(
     path    => ['/bin','/sbin','/usr/sbin','/usr/bin'],
   }
   $if_dirs = [
-    "${basedir}",
+    $basedir,
     "${basedir}/bin",
     "${basedir}/etc",
     "${basedir}/share",
@@ -88,7 +88,7 @@ class bro(
   $localbro_default = "puppet:///modules/bro/localbro/${sitepolicy}"
   $localbro_custom = "puppet:///modules/bro/localbro/${::hostname}_local.bro"
   file { "${sitedir}/${sitepolicy}":
-    source => [ "${localbro_custom}","${localbro_default}" ],
+    source => [ $localbro_custom,$localbro_default ],
     notify => Service['wassup_bro'],
     require => [
       Exec['create_base'],
@@ -148,7 +148,7 @@ class bro(
       order   => 03,
     }
   } else {
-    file { "${node_conf}":
+    file { $node_conf:
       content => template('bro/node.cfg.erb'),
       notify  => Service['wassup_bro'],
     }

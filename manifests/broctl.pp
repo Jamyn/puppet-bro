@@ -25,7 +25,7 @@ class bro::broctl(
     tps::report { "${basedir}/etc/broctl.cfg":
       flare => [
         '# PUPPET MANAGED CONFIG',
-        "${cid}",
+        $cid,
         "SitePolicyPath = ${sitedir}",
         "MailTo = ${mailto}",
         "SitePolicyStandalone = ${sitepolicy}",
@@ -33,7 +33,7 @@ class bro::broctl(
         "SpoolDir = ${logdir}/spool",
         "LogDir = ${logdir}/logs",
         "LogRotationInterval = ${logrotate}",
-        "${purge_logs}",
+        $purge_logs,
         "MinDiskSpace = ${mindisk}",
         "Debug = ${debug}",
       ],
